@@ -1,0 +1,40 @@
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX doap: <http://usefulinc.com/ns/doap#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+
+CONSTRUCT {
+?URI a doap:Project;
+	xsd:integer ?code_du_projet;
+	doap:name ?titre;
+	xsd:string ?acronyme;
+	xsd:string ?code_du_type_de_partenaire;
+	xsd:string ?type_de_partenaire;
+	xsd:string ?code_pays;
+	xsd:string ?pays_du_partenaire;
+	xsd:string ?code_d_appel_a_projet;
+	xsd:string ?appel_a_projet;
+	xsd:date ?date_de_debut;
+	xsd:date ?date_de_fin;
+	doap:description ?resume;
+	xsd:integer ?duree;
+	xsd:float ?montant;
+	doap:short-description ?theme;
+	xsd:string ?code_rcn;
+	doap:homepage ?lien_cordis;
+	dcat:keyword ?mots_cles;
+	rdf:type ?URI2.
+?URI2 a dbo:Organisation;
+	xsd:string ?identifiant_de_partenaire;
+	xsd:string ?type_d_identifiant;
+	rdf:label ?libelle_de_partenaire;
+	xsd:string ?sigle_de_partenaire;
+}
+FROM <file:csv.csv>
+WHERE {
+  BIND (URI(CONCAT('http://ex.org/Projet/', ?code_du_projet)) AS ?URI)
+  BIND (URI(CONCAT('http://ex.org/Organisation/', ?sigle_de_partenaire)) AS ?URI2)
+}
