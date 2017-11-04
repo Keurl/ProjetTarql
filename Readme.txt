@@ -1,0 +1,1 @@
+Launch : tarql --delimiter semicolon --dedup 1000000 rdf.sparql > donnees.rdf
