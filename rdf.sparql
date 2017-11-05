@@ -4,39 +4,44 @@ PREFIX doap: <http://usefulinc.com/ns/doap#>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <https://www.w3.org/2000/01/rdf-schema#>
 PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX org: <https://www.w3.org/ns/org#>
+PREFIX time: <https://www.w3.org/2006/time#>
 
 CONSTRUCT {
 ?URI a doap:Project;
 	dbp:number ?code_du_projet;
 	doap:name ?titre;
 	xsd:string ?acronyme;
-	xsd:string ?code_du_type_de_partenaire;
-	xsd:string ?type_de_partenaire;
 	xsd:string ?code_pays;
 	xsd:string ?pays_du_partenaire;
 	xsd:string ?code_d_appel_a_projet;
 	xsd:string ?appel_a_projet;
-	xsd:date ?date_de_debut;
-	xsd:date ?date_de_fin;
+	time:hasBeginning ?date_de_debut;
+	time:hasEnd ?date_de_fin;
 	doap:description ?resume;
 	dbp:number ?duree;
 	dbp:number ?montant;
-	doap:short-description ?theme;
+	foaf:topic ?theme;
 	xsd:string ?code_rcn;
 	doap:homepage ?lien_cordis;
 	dcat:keyword ?mots_cles;
-	rdf:type ?URI2.
+	org:linkedTo ?URI2.
 ?URI2 a dbo:Organisation;
 	xsd:string ?identifiant_de_partenaire;
 	xsd:string ?type_d_identifiant;
-	rdf:label ?libelle_de_partenaire;
+	rdfs:label ?libelle_de_partenaire;
 	xsd:string ?sigle_de_partenaire;
+?URI3 a owl:Class;
+	rdfs:label  ?code_du_type_de_partenaire;
+	rdfs:label  ?type_de_partenaire;
 }
 FROM <file:csv.csv>
 WHERE {
   BIND (URI(CONCAT('http://ex.org/Projet/', ?code_du_projet)) AS ?URI)
   BIND (URI(CONCAT('http://ex.org/Organisation/', ?sigle_de_partenaire)) AS ?URI2)
+  BIND (URI(CONCAT('http://ex.org/Organisation/Types', ?type_de_partenaire)) AS ?URI3)
   BIND (xsd:integer(?Id) AS ?code_du_projet)
   BIND (xsd:integer(?dureeInt) AS ?duree)
   BIND (xsd:float(?montantF) AS ?montant)
