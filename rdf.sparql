@@ -8,14 +8,13 @@ PREFIX rdfs: <https://www.w3.org/2000/01/rdf-schema#>
 PREFIX dcat: <http://www.w3.org/ns/dcat#>
 PREFIX org: <https://www.w3.org/ns/org#>
 PREFIX time: <https://www.w3.org/2006/time#>
+PREFIX owl: <https://www.w3.org/2002/07/owl#>
 
 CONSTRUCT {
-?URI a doap:Project;
+?URI rdf:type doap:Project;
 	dbp:number ?code_du_projet;
 	doap:name ?titre;
 	xsd:string ?acronyme;
-	xsd:string ?code_pays;
-	xsd:string ?pays_du_partenaire;
 	xsd:string ?code_d_appel_a_projet;
 	xsd:string ?appel_a_projet;
 	time:hasBeginning ?date_de_debut;
@@ -28,20 +27,23 @@ CONSTRUCT {
 	doap:homepage ?lien_cordis;
 	dcat:keyword ?mots_cles;
 	org:linkedTo ?URI2.
-?URI2 a dbo:Organisation;
+?URI2 rdf:type dbo:Organisation;
 	xsd:string ?identifiant_de_partenaire;
 	xsd:string ?type_d_identifiant;
 	rdfs:label ?libelle_de_partenaire;
-	xsd:string ?sigle_de_partenaire;
-?URI3 a owl:Class;
-	rdfs:label  ?code_du_type_de_partenaire;
-	rdfs:label  ?type_de_partenaire;
+	dbo:type ?URI3;
+	dbo:nationality ?URI4.
+?URI3 rdf:type owl:Class;
+	rdfs:label  ?code_du_type_de_partenaire.
+?URI4 rdf:type dbo:nationality;
+	rdfs:label ?code_pays.
 }
 FROM <file:csv.csv>
 WHERE {
-  BIND (URI(CONCAT('http://ex.org/Projet/', ?code_du_projet)) AS ?URI)
-  BIND (URI(CONCAT('http://ex.org/Organisation/', ?sigle_de_partenaire)) AS ?URI2)
-  BIND (URI(CONCAT('http://ex.org/Organisation/Types', ?type_de_partenaire)) AS ?URI3)
+  BIND (URI(CONCAT('http://ex.org/Projet/', ?titre)) AS ?URI)
+  BIND (URI(CONCAT('http://ex.org/Participants/', ?sigle_de_partenaire)) AS ?URI2)
+  BIND (URI(CONCAT('http://ex.org/Participants/Type/', ?type_de_partenaire)) AS ?URI3)
+  BIND (URI(CONCAT('http://ex.org/Participants/Nationalite/', ?pays_du_partenaire)) AS ?URI4)
   BIND (xsd:integer(?Id) AS ?code_du_projet)
   BIND (xsd:integer(?dureeInt) AS ?duree)
   BIND (xsd:float(?montantF) AS ?montant)
