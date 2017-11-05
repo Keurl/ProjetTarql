@@ -8,7 +8,7 @@ PREFIX dcat: <http://www.w3.org/ns/dcat#>
 
 CONSTRUCT {
 ?URI a doap:Project;
-	xsd:integer ?code_du_projet;
+	dbp:number ?code_du_projet;
 	doap:name ?titre;
 	xsd:string ?acronyme;
 	xsd:string ?code_du_type_de_partenaire;
@@ -20,8 +20,8 @@ CONSTRUCT {
 	xsd:date ?date_de_debut;
 	xsd:date ?date_de_fin;
 	doap:description ?resume;
-	xsd:integer ?duree;
-	xsd:float ?montant;
+	dbp:number ?duree;
+	dbp:number ?montant;
 	doap:short-description ?theme;
 	xsd:string ?code_rcn;
 	doap:homepage ?lien_cordis;
@@ -37,4 +37,7 @@ FROM <file:csv.csv>
 WHERE {
   BIND (URI(CONCAT('http://ex.org/Projet/', ?code_du_projet)) AS ?URI)
   BIND (URI(CONCAT('http://ex.org/Organisation/', ?sigle_de_partenaire)) AS ?URI2)
+  BIND (xsd:integer(?Id) AS ?code_du_projet)
+  BIND (xsd:integer(?dureeInt) AS ?duree)
+  BIND (xsd:float(?montantF) AS ?montant)
 }
