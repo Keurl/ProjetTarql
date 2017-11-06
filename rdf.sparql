@@ -14,29 +14,36 @@ CONSTRUCT {
 ?URI rdf:type doap:Project;
 	dbp:number ?code_du_projet;
 	doap:name ?titre;
-	xsd:string ?acronyme;
-	xsd:string ?code_d_appel_a_projet;
-	xsd:string ?appel_a_projet;
+	dbp:shortName ?acronyme;
+	?URI7 ?URI6;
 	time:hasBeginning ?date_de_debut;
 	time:hasEnd ?date_de_fin;
 	doap:description ?resume;
-	dbp:number ?duree;
+	time:Duration ?duree;
 	dbp:number ?montant;
 	foaf:topic ?theme;
-	xsd:string ?code_rcn;
+	?URI8 ?code_rcn;
 	doap:homepage ?lien_cordis;
 	dcat:keyword ?mots_cles;
 	org:linkedTo ?URI2.
 ?URI2 rdf:type dbo:Organisation;
-	xsd:string ?identifiant_de_partenaire;
-	xsd:string ?type_d_identifiant;
+	?URI5 ?identifiant_de_partenaire;
 	rdfs:label ?libelle_de_partenaire;
 	dbo:type ?URI3;
-	dbo:nationality ?URI4.
-?URI3 rdf:type owl:Class;
-	rdfs:label  ?code_du_type_de_partenaire.
-?URI4 rdf:type dbo:nationality;
+	dbo:locationCountry ?URI4.
+?URI3 rdf:type owl:Thing;
+	rdfs:label ?type_de_partenaire
+	rdfs:label ?code_du_type_de_partenaire.
+?URI4 rdf:type dbo:PopulatedPlace;
+	rdfs:label ?pays_du_partenaire;
 	rdfs:label ?code_pays.
+?URI6 rdf:type owl:Class;
+	rdfs:label ?appel_a_projet;
+	rdfs:label ?code_d_appel_a_projet.
+?URI5 rdf:type owl:DatatypeProperty.
+?URI7 rdf:type owl:DatatypeProperty.
+?URI8 rdf:type owl:DatatypeProperty;
+	rdfs:range xsd:nonNegativeInteger.
 }
 FROM <file:csv.csv>
 WHERE {
@@ -44,6 +51,10 @@ WHERE {
   BIND (URI(CONCAT('http://ex.org/Participants/', ?sigle_de_partenaire)) AS ?URI2)
   BIND (URI(CONCAT('http://ex.org/Participants/Type/', ?type_de_partenaire)) AS ?URI3)
   BIND (URI(CONCAT('http://ex.org/Participants/Nationalite/', ?pays_du_partenaire)) AS ?URI4)
+  BIND (URI(CONCAT('http://ex.org/ontology/', ?type_d_identifiant)) AS ?URI5)
+  BIND (URI(CONCAT('http://ex.org/Projet/Appel/', ?appel_a_projet)) AS ?URI6)
+  BIND (URI('http://ex.org/ontology/Appel_Projet') AS ?URI7)
+  BIND (URI('http://ex.org/ontology/Code_RCN') AS ?URI8)
   BIND (xsd:integer(?Id) AS ?code_du_projet)
   BIND (xsd:integer(?dureeInt) AS ?duree)
   BIND (xsd:float(?montantF) AS ?montant)
