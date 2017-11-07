@@ -32,7 +32,7 @@ CONSTRUCT {
 	dbo:type ?URI3;
 	dbo:locationCountry ?URI4.
 ?URI3 rdf:type owl:Thing;
-	rdfs:label ?type_de_partenaire
+	rdfs:label ?type_de_partenaire;
 	rdfs:label ?code_du_type_de_partenaire.
 ?URI4 rdf:type dbo:PopulatedPlace;
 	rdfs:label ?pays_du_partenaire;
