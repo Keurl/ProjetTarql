@@ -13,6 +13,7 @@ PREFIX frapo: <http://purl.org/cerif/frapo/>
 
 CONSTRUCT {
 ?URI rdf:type doap:Project;
+     	owl:sameAs ?URI_PROJECT_2002;
 	frapo:hasCode ?code_du_projet;
 	doap:name ?titre;
 	dbp:shortName ?acronyme;
@@ -40,7 +41,7 @@ CONSTRUCT {
 	frapo:hasCode ?code_pays.
 ?URI6 rdf:type owl:Class;
 	rdfs:label ?appel_a_projet;
-	rfrapo:hasCode ?code_d_appel_a_projet.
+	frapo:hasCode ?code_d_appel_a_projet.
 ?URI5 rdf:type owl:DatatypeProperty.
 ?URI7 rdf:type owl:DatatypeProperty.
 ?URI8 rdf:type owl:DatatypeProperty;
@@ -49,6 +50,7 @@ CONSTRUCT {
 FROM <file:csv.csv>
 WHERE {
   BIND (URI(CONCAT('https://data.enseignementsup-recherche.gouv.fr/explore/dataset/appels-a-projets-horizon-2020-projets-retenus-et-participants-identifies/', ?code_du_projet)) AS ?URI)
+  BIND(URI(CONCAT("https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-aap-fp7-projets-retenus-participants-identifies/", ?code_du_projet)) AS ?URI_PROJECT_2002)
   BIND (URI(CONCAT('http://ex.org/Participants/', ?sigle_de_partenaire)) AS ?URI2)
   BIND (URI(CONCAT('http://ex.org/Participants/Type/', ?type_de_partenaire)) AS ?URI3)
   BIND (URI(CONCAT('http://ex.org/Participants/Nationalite/', ?pays_du_partenaire)) AS ?URI4)
